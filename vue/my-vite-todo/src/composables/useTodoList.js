@@ -8,7 +8,8 @@ export const useTodoList=()=>{
   const onmount_alltask = async()=>{
     try{
       // const res = await fetch("/back_app/alltask")
-      const res = await fetch("http://localhost:5000/back_app/alltask")
+      // const res = await fetch("http://localhost:5000/back_app/alltask")
+      const res = await fetch("flask:5000/back_app/alltask")
       //fetch結果の本文のみ抽出しJSON化
       //→その中のtodos_listだけを取り出してreturnしPromiseResultに詰める
       const resjson = await res.json()
