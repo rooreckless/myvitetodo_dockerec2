@@ -39,6 +39,9 @@ services:
     #本番用のnginx設定ファイルのバインド
     volumes:
       - type: bind
+        source: "./vue/my-vite-todo/dist"
+        target: "/usr/share/nginx/html"
+      - type: bind
         source: "./nginx/etc/nginx/prod_conf.d"
         target: "/etc/nginx/conf.d"
     ports:
