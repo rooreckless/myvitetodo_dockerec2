@@ -1,0 +1,50 @@
+version: "3"
+services:
+  #開発環境では、vueの開発サーバーを起動させるのでvueサービスを使用
+  vue:
+    build: ./vue
+    container_name: myvitetodo_vue_cnt
+    #nginxを介さずに直接開発サーバーにアクセスしたいなら以下のポートを開けましょう
+    # ports:
+    #   - 5173:5173
+    volumes:
+      - type: bind
+        source: "./vue"
+        target: "/usr/src/app"
+    tty: true
+    command: sh -c "cd my-vite-todo && npm install && npm run dev"
+  flask:
+    #nginxを介さずに直接開発サーバーにアクセスしたいなら以下のポートを開けましょう
+    # ports:
+    #   - 5000:5000
+    #開発環境用環境変数を読み込む = このコンテナ自体の環境変数となる
+    env_file: "devenv.env"
+    #開発用のgunicorn起動コマンド
+    command: gunicorn -w 2 -b 0.0.0.0:5000 'apps.app:create_app("local")' --reload
+  mariadb:
+    volumes:
+    #開発環境用データ永続化(サービス外ボリュームへ)
+      - type: volume
+        source: myvitetodo_db_datavol
+        target: /var/lib/mysql
+    #DB初期化用sql
+      # - type: bind
+      #   source: ./mariadb/sqls
+      #   target: "/docker-entrypoint-initdb.d"
+    # cnf設定
+      - type: bind
+        source: "./mariadb/conf.d"
+        target: "/etc/mysql/conf.d"
+    env_file: "devenv.env"
+  nginx:
+    #開発用のnginx設定ファイルのバインド
+    volumes:
+      - type: bind
+        source: "./nginx/etc/nginx/dev_conf.d"
+        target: "/etc/nginx/conf.d"
+    ports:
+      - 8880:80
+      - 443:443
+#サービス外ボリュームを作成(開発環境でのデータ永続化処理)
+volumes:
+  myvitetodo_db_datavol:

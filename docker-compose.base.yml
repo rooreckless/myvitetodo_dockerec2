@@ -1,0 +1,42 @@
+version: "3"
+services:
+  # vueサービスは開発環境でのみ利用なのでdev.ymlに記述しています。
+  flask:
+    build: ./flask
+    container_name: myvitetodo_flask_cnt
+    # ports句は個々のymlで記述
+    volumes:
+      - type: bind
+        source: "./flask"
+        target: "/usr/src/app"
+    #command句は個々のymlで記述
+    depends_on:
+      - mariadb
+  mariadb:
+    build: ./mariadb
+    container_name: myvitetodo_mariadb_cnt
+    hostname: db-server
+    #環境変数は個々のymlでenv_file句を使って読みます
+    expose:
+      - "3306"
+    #volumes句は個々のymlに記載
+    #データ永続化(サービス外ボリュームへ)
+    # volumes:
+    #   - type: volume
+    #     source: my-vite-todo_db_data
+    #     target: /var/lib/mysql
+    #DB初期化用sql
+      # - type: bind
+      #   source: ./mariadb/sqls
+      #   target: "/docker-entrypoint-initdb.d"
+    # cnf設定
+      # - type: bind
+      #   source: "./mariadb/conf.d"
+      #   target: "/etc/mysql/conf.d"
+  nginx:
+    build: ./nginx
+    container_name: myvitetodo_nginx_cnt
+    #volumes句とports句は個々のymlに記載
+    depends_on:
+      - flask
+    command: nginx -g "daemon off;"
