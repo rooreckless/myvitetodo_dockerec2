@@ -10,15 +10,15 @@ services:
         source: "./flask"
         target: "/usr/src/app"
     #command句は個々のymlで記述
-    depends_on:
-      - mariadb
-  mariadb:
-    build: ./mariadb
-    container_name: myvitetodo_mariadb_cnt
-    hostname: db-server
-    #環境変数は個々のymlでenv_file句を使って読みます
-    expose:
-      - "3306"
+    # depends_on:
+    #   - mariadb
+  # mariadb:
+  #   build: ./mariadb
+  #   container_name: myvitetodo_mariadb_cnt
+  #   hostname: db-server
+  #   #環境変数は個々のymlでenv_file句を使って読みます
+  #   expose:
+  #     - "3306"
     #volumes句は個々のymlに記載
     #データ永続化(サービス外ボリュームへ)
     # volumes:

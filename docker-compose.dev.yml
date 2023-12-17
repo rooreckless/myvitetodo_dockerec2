@@ -22,6 +22,12 @@ services:
     #開発用のgunicorn起動コマンド
     command: gunicorn -w 2 -b 0.0.0.0:5000 'apps.app:create_app("local")' --reload
   mariadb:
+    build: ./mariadb
+    container_name: myvitetodo_mariadb_cnt
+    hostname: db-server
+    #環境変数は個々のymlでenv_file句を使って読みます
+    expose:
+      - "3306"
     volumes:
     #開発環境用データ永続化(サービス外ボリュームへ)
       - type: volume
