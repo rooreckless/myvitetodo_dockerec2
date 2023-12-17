@@ -14,8 +14,8 @@ services:
   #   tty: true
   #   command: sh -c "cd my-vite-todo && npm install && npm run dev"
   flask:
-    # ports:
-    #   - 5000:5000
+    ports:
+      - 5000:5000
     #開発環境用環境変数を読み込む = このコンテナ自体の環境変数となる
     env_file: "prodenv.env"
     #開発用のgunicorn起動コマンド
