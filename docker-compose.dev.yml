@@ -5,8 +5,8 @@ services:
     build: ./vue
     container_name: myvitetodo_vue_cnt
     #nginxを介さずに直接開発サーバーにアクセスしたいなら以下のポートを開けましょう
-    # ports:
-    #   - 5173:5173
+    ports:
+      - 5173:5173
     volumes:
       - type: bind
         source: "./vue"
@@ -15,8 +15,8 @@ services:
     command: sh -c "cd my-vite-todo && npm install && npm run dev"
   flask:
     #nginxを介さずに直接開発サーバーにアクセスしたいなら以下のポートを開けましょう
-    # ports:
-    #   - 5000:5000
+    ports:
+      - 5000:5000
     #開発環境用環境変数を読み込む = このコンテナ自体の環境変数となる
     env_file: "devenv.env"
     #開発用のgunicorn起動コマンド
