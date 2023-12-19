@@ -45,8 +45,8 @@ services:
         source: "./nginx/etc/nginx/prod_conf.d"
         target: "/etc/nginx/conf.d"
       - type: bind
-        source: "/etc/letsencrypt/live/"
-        target: "/etc/letsencrypt/live/"
+        source: "/etc/letsencrypt/live/www.roosmemosite.net"
+        target: "/etc/letsencrypt/live/www.roosmemosite.net"
     ports:
       - 80:80
       - 443:443
