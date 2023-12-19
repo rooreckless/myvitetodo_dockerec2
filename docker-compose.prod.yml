@@ -44,6 +44,9 @@ services:
       - type: bind
         source: "./nginx/etc/nginx/prod_conf.d"
         target: "/etc/nginx/conf.d"
+      - type: bind
+        source: "/etc/letsencrypt/live/"
+        target: "/etc/letsencrypt/live/"
     ports:
       - 80:80
       - 443:443
