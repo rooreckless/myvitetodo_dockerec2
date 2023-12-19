@@ -1,18 +1,5 @@
 version: "3"
 services:
-  #本番環境では、vueの内容はビルドされて、nginxに搭載されることを前提とします。
-  #なのでvueサービスが消えます。
-  # vue:
-  #   build: ./vue
-  #   container_name: myvitetodo_vue_cnt
-  #   ports:
-  #     - 5173:5173
-  #   volumes:
-  #     - type: bind
-  #       source: "./vue"
-  #       target: "/usr/src/app"
-  #   tty: true
-  #   command: sh -c "cd my-vite-todo && npm install && npm run dev"
   flask:
     ports:
       - 5000:5000
@@ -20,21 +7,6 @@ services:
     env_file: "prodenv.env"
     #開発用のgunicorn起動コマンド
     command: gunicorn -w 2 -b 0.0.0.0:5000 'apps.app:create_app("product")'
-  # mariadb:
-  #   volumes:
-  #   #開発環境用データ永続化(サービス外ボリュームへ)
-  #     - type: volume
-  #       source: myvitetodo_db_datavol
-  #       target: /var/lib/mysql
-  #   #DB初期化用sql
-  #     # - type: bind
-  #     #   source: ./mariadb/sqls
-  #     #   target: "/docker-entrypoint-initdb.d"
-  #   # cnf設定
-  #     - type: bind
-  #       source: "./mariadb/conf.d"
-  #       target: "/etc/mysql/conf.d"
-  #   env_file: "prodenv.env"
   nginx:
     #本番用のnginx設定ファイルのバインド
     volumes:
@@ -45,8 +17,11 @@ services:
         source: "./nginx/etc/nginx/prod_conf.d"
         target: "/etc/nginx/conf.d"
       - type: bind
-        source: "/etc/letsencrypt/live/www.roosmemosite.net"
-        target: "/etc/letsencrypt/live/www.roosmemosite.net"
+        source: "/etc/letsencrypt/live/www.roosmemosite.net/fullchain.pem"
+        target: "/etc/nginx/certs/server.crt"
+      - type: bind
+        source: "/etc/letsencrypt/live/www.roosmemosite.net/privkey.pem"
+        target: "/etc/nginx/certs/server.key"
     ports:
       - 80:80
       - 443:443
