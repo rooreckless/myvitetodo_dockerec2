@@ -37,7 +37,8 @@ def create_app(config_key):
   #CORSも連携します
   # CORS(app, resources={"/back_app/*":{"origins":"http://tmp/gunicorn_flask.sock"}})
   # CORS(app, resources={"/back_app/*":{"origins":"http://vue:5173"}})
-  CORS(app)
+  CORS(app, resources={"/back_app/*":{"origins":"http://flask:5000"}})
+  # CORS(app) #ok
   return app
 if __name__=="__main__":
     app=create_app()
